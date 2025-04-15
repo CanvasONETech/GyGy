@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Roblox GUI Creator</title>
+  <style>
+    body {
+      background: #131314;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    #gui-area {
+      margin: 20px auto;
+      width: 300px;
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      background: #2a2a2a;
+      border: none;
+      color: white;
+    }
+    textarea {
+      width: 90%;
+      height: 200px;
+      margin-top: 20px;
+      background: #111;
+      color: lime;
+      border: none;
+      padding: 10px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>Roblox GUI Creator</h1>
+
+  <div id="gui-area">
+    <select id="guiType">
+      <option value="TextButton">TextButton</option>
+      <option value="TextLabel">TextLabel</option>
+      <option value="Frame">Frame</option>
+    </select>
+
+    <input type="text" id="guiText" placeholder="Text (if applicable)">
+    <input type="text" id="posX" placeholder="Position X (0-1)">
+    <input type="text" id="posY" placeholder="Position Y (0-1)">
+    <input type="text" id="sizeX" placeholder="Size X (0-1)">
+    <input type="text" id="sizeY" placeholder="Size Y (0-1)">
+
+    <button onclick="generateCode()">Generate Lua Code</button>
+  </div>
+
+  <textarea id="output" readonly></textarea>
+
+  <script>
+    function generateCode() {
+      const guiType = document.getElementById('guiType').value;
+      const guiText = document.getElementById('guiText').value;
+      const posX = document.getElementById('posX').value;
+      const posY = document.getElementById('posY').value;
+      const sizeX = document.getElementById('sizeX').value;
+      const sizeY = document.getElementById('sizeY').value;
+
+      let code = `local gui = Instance.new("${guiType}")\n`;
+      code += `gui.Position = UDim2.new(${posX}, 0, ${posY}, 0)\n`;
+      code += `gui.Size = UDim2.new(${sizeX}, 0, ${sizeY}, 0)\n`;
+      if (guiText && (guiType === "TextButton" || guiType === "TextLabel")) {
+        code += `gui.Text = "${guiText}"\n`;
+      }
+      code += `gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")`;
+
+      document.getElementById('output').value = code;
+    }
+  </script>
+</body>
+</html>
